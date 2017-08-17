@@ -1,15 +1,8 @@
 import requests
-import logging
 from datetime import date
 from datetime import timedelta
 
 GITHUB_API_URI='https://api.github.com'
-DEFAULT_AUTH_FILE_PATH = 'auth.txt'
-VERBOSITY_TO_LOGGING_LEVELS = {
-    0: logging.WARNING,
-    1: logging.INFO,
-    2: logging.DEBUG
-}
 
 
 def get_offset_date(modifed_date, offset_in_days):
@@ -50,17 +43,20 @@ def get_open_issues_amount(repo_owner, repo_name):
 
 
 def print_result_to_console():
-    print('Программа печатает 20 самых популярных репозитариев начиная с {}'.format(week_earlier_date))
+    print('Program prints {} most popular repositories since {}\n'.format(number_of_results, week_earlier_date))
     for index, repo in enumerate(top_repositories_list):
         good_choice_label = ''
         if not repo['issues']:
             good_choice_label = ' Try it!'
-        print('{0:2} {1:70} {2:3} stars {3:2} issues'.format(index, repo['url'] + good_choice_label, repo['stars'],
-                                                                 repo['issues']))
+        print('{0:2} {1:70} {2:3} stars {3:2} issues'.format(index + 1,
+                                                             repo['url'] + good_choice_label,
+                                                             repo['stars'],
+                                                             repo['issues']))
 
 
 if __name__ == '__main__':
     week_earlier_date = get_offset_date(date.today(), '-7')
-    top_repositories_list = get_trending_repositories(week_earlier_date)
-    #print(top_repositories_list)
+    number_of_results = 20
+    top_repositories_list = get_trending_repositories(week_earlier_date,
+                                                      number_of_results)
     print_result_to_console()
