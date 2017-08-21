@@ -35,7 +35,7 @@ def get_open_issues_amount(repo_owner, repo_name):
                                                          repo_owner,
                                                          repo_name)
     issues_json_data = requests.get(query_search_url).json()
-    number_of_open_issues = len([i for i, x in enumerate(issues_json_data) if x['state'] == 'open'])
+    number_of_open_issues = len([ x for x in issues_json_data if x['state'] == 'open' ])
     return number_of_open_issues
 
 
